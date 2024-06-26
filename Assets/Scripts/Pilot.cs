@@ -78,7 +78,6 @@ public class Pilot : Subject, IInteractable
         pilotAudioSource.Play();
         SleepingCoroutine = StartCoroutine(Sleep());
         sleepingImage.SetActive(true);
-        Notify(Actions.PilotAsleep);
         //Debug.Log("Pilot has started sleeping");
     }
 
@@ -86,6 +85,7 @@ public class Pilot : Subject, IInteractable
     {
         while (isAsleep)
         {
+            Notify(Actions.PilotAsleep);
             yield return new WaitForSeconds(2);
         }
     }

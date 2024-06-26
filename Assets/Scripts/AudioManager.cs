@@ -77,6 +77,9 @@ public class AudioManager : MonoBehaviour
 
     public void SetMusicVolume(float volume)
     {
+        if(audioMixer == null)
+            return;
+
         if (volume <= 0.0001f)
         {
             audioMixer.SetFloat("MusicVolume", -80f);
@@ -89,6 +92,9 @@ public class AudioManager : MonoBehaviour
 
     public void SetSFXVolume(float volume)
     {
+        if (audioMixer == null)
+            return;
+
         if (volume <= 0.0001f)
         {
             audioMixer.SetFloat("SFXVolume", -80f);

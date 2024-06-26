@@ -20,7 +20,6 @@ using System.Linq;
 
 public class LeaderBoard : MonoBehaviour
 {
-    private const string databaseURL = "";
 
     public TextMeshProUGUI[] scoreTexts;
 
@@ -31,7 +30,7 @@ public class LeaderBoard : MonoBehaviour
             Debug.LogError("Please assign exactly 10 TextMeshProUGUI elements in the inspector");
             return;
         }
-
+        Debug.Log("OnEnable called. Starting GetScores coroutine.");
         StartCoroutine(GetScores());
     }
 
@@ -39,6 +38,7 @@ public class LeaderBoard : MonoBehaviour
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(databaseURL))
         {
+            webRequest.SetRequestHeader("Cache-Control", "no-cache");
             yield return webRequest.SendWebRequest();
 
             if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
@@ -48,27 +48,34 @@ public class LeaderBoard : MonoBehaviour
             else
             {
                 string jsonResponse = webRequest.downloadHandler.text;
-                //Debug.Log(jsonResponse);
+                Debug.Log("Scores fetched: " + jsonResponse);
 
                 var scores = JsonConvert.DeserializeObject<Dictionary<string, Data>>(jsonResponse);
                 var listOfScores = scores.Values.ToList();
                 listOfScores.Sort((a, b) => b.score.CompareTo(a.score));
-                int index = 0;
 
-                foreach (var score in listOfScores)
-                {
-                    if (index < scoreTexts.Length)
-                    {
-                        scoreTexts[index].text = $"User: {score.user}, Score: {score.score}";
-                        index++;
-                    }
-                }
-
-                for (int i = index; i < scoreTexts.Length; i++)
-                {
-                    scoreTexts[i].text = "";
-                }
+                UpdateScoreTexts(listOfScores);
             }
+        }
+    }
+
+    private void UpdateScoreTexts(List<Data> listOfScores)
+    {
+        Debug.Log("Updating score texts.");
+        int index = 0;
+
+        foreach (var score in listOfScores)
+        {
+            if (index < scoreTexts.Length)
+            {
+                scoreTexts[index].text = $"User: {score.user}, Score: {score.score}";
+                index++;
+            }
+        }
+
+        for (int i = index; i < scoreTexts.Length; i++)
+        {
+            scoreTexts[i].text = "";
         }
     }
 }
