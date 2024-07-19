@@ -1,4 +1,4 @@
-## FlightFeast
+## [FlightFeast](https://lazyface.itch.io/flightfeast)
 
 FlightFeast is a game where the player takes on the role of a cabin attendant. The objective is to attend to passengers' food orders and wake up the pilot whenever they fall asleep. This game combines time management and strategy to offer a fun and challenging experience.
 
