@@ -20,8 +20,11 @@ public class SoundsUIController : MonoBehaviour
 
     private void Start()
     {
-        musicSlider.value = AudioManager.Instance.GetMusicVolume();
-        sfxSlider.value = AudioManager.Instance.GetSFXVolume();
+        if(AudioManager.Instance != null)
+        {
+            musicSlider.value = AudioManager.Instance.GetMusicVolume();
+            sfxSlider.value = AudioManager.Instance.GetSFXVolume();
+        }
     }
 
     public void SetMusicVolume()
